@@ -1,9 +1,11 @@
 package com.example.vocablearning.Service;
 
 import com.example.vocablearning.Model.Word;
+import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.ArrayList;
 
+@Service
 public class WordServiceImplement implements WordService {
 
     private List<Word> wordList = new ArrayList<>();
