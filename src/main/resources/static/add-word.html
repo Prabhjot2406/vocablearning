@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Word</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(120deg, #e1f7fa 0%, #ffe9e3 100%);
+            min-height: 100vh;
+        }
+        .form-container {
+            background: #fff;
+            max-width: 430px;
+            margin: 80px auto;
+            padding: 40px 28px 32px 28px;
+            border-radius: 18px;
+            box-shadow: 0 8px 36px rgba(48,76,76,.12);
+        }
+        .title {
+            text-align: center;
+            font-weight: 700;
+            color: #3183a6;
+            margin-bottom: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2 class="title">Add a New Word</h2>
+        <form th:action="@{/add-word}" method="post" th:object="${word}">
+            <div class="mb-3">
+                <label for="word" class="form-label">Word</label>
+                <input type="text" th:field="*{word}" class="form-control" id="word" required placeholder="e.g. Jubilant">
+            </div>
+            <div class="mb-3">
+                <label for="meaning" class="form-label">Meaning</label>
+                <input type="text" th:field="*{meaning}" class="form-control" id="meaning" required placeholder="e.g. Expressing great happiness">
+            </div>
+            <div class="mb-3">
+                <label for="sentence" class="form-label">Sentence</label>
+                <textarea th:field="*{sentence}" class="form-control" id="sentence" rows="2" required placeholder="e.g. The crowd was jubilant after the win."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mt-2">Submit Word</button>
+        </form>
+    </div>
+</body>
+</html>
