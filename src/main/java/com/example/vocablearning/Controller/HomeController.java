@@ -45,7 +45,7 @@ public class HomeController {
     @GetMapping("/add-word")
     public String addData(Model model) {
         {
-            model.addAttribute("word", new Word("Jubilant", "Expressing great happiness", "The jubilant crowd cheered loudly.")); // Add a Word object to the model
+            model.addAttribute("word", new Word(1L,"Jubilant", "Expressing great happiness", "The jubilant crowd cheered loudly.")); // Add a Word object to the model
             return "add-word";
         }
     }
