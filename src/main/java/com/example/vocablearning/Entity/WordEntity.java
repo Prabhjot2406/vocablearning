@@ -16,7 +16,7 @@ import jakarta.persistence.GeneratedValue;
 // ↕️ JPA Maps This entity object To database table. ↕️
 
 @Table(name = "words_db") // Map this entity to the "words_db" table in the database
-public class WordEntity {
+public class WordEntity {  //jpa says there should be no logic in entity class
     
     @Id // Primary key of the entity
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generate ID values
