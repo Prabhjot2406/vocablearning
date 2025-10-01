@@ -69,7 +69,8 @@ public class HomeController {
         System.out.println("Word: " + word.getWord());
         System.out.println("Meaning: " + word.getMeaning());
         System.out.println("Sentence: " + word.getSentence());
-        return wordList; // Return the list of words as a string
+        wordList.add(word);
+        return wordService.readWords(); // Return the list of words as a string
     }
 
     @PostMapping("/delete-word")  // need to add new button in html

@@ -14,6 +14,9 @@ public class Word {
         this.sentence = sentence;
     }
 
+    public Word() { }
+
+
     public Long getId() {
         return id;
     }
