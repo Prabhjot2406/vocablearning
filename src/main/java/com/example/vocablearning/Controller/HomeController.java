@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 import com.example.vocablearning.Model.Word;
+import com.example.vocablearning.Service.AIService;
 import com.example.vocablearning.Service.WordService;
 
 import java.util.ArrayList;
@@ -21,14 +22,16 @@ public class HomeController {
 
 
     private final WordService wordService;
+    private final AIService aiservice;
     private List<Word> wordList = new ArrayList<>(); // In-memory list to store words
     
 
     // Dependency injection of WordService
     // @Autowired
     // WordService wordService;
-    public HomeController(WordService wordService) { // Constructor injection
+    public HomeController(WordService wordService, AIService aiservice) { // Constructor injection
         this.wordService = wordService;
+        this.aiservice = aiservice;
     }
 
 
@@ -77,5 +80,13 @@ public class HomeController {
     @ResponseBody
     public Boolean deleteWord(@RequestParam String word) {
         return wordService.deleteWord(word);
+    }
+
+    @PostMapping("/generate-word-details")
+    @ResponseBody
+    public Word generateWordDetails(@RequestParam String word) {
+        
+            return aiservice.generateWordDetails(word);
+
     }
 }

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -44,5 +44,137 @@
             <button type="submit" class="btn btn-primary w-100 mt-2">Submit Word</button>
         </form>
     </div>
+</body>
+</html>  -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Word - Vocabulary Learning</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, textarea { width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .word-input-group { display: flex; align-items: center; gap: 10px; }
+        .generate-btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .generate-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .generate-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .submit-btn {
+            background-color: #2196F3;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .submit-btn:hover { background-color: #1976D2; }
+        .loading-spinner { display: inline-block; margin-left: 10px; }
+    </style>
+</head>
+<body>
+    <h2>🎓 Add New Word</h2>
+    
+    <form th:action="@{/add-word}" method="post" th:object="${word}">
+        <div class="form-group">
+            <label for="word">Word:</label>
+            <div class="word-input-group">
+                <input type="text" id="word" th:field="*{word}" placeholder="Enter a word..." required>
+                <button type="button" class="generate-btn" onclick="generateWordDetails()">
+                    🤖 AI Generate
+                </button>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="meaning">Meaning:</label>
+            <textarea id="meaning" th:field="*{meaning}" rows="3" placeholder="AI will generate meaning..." required></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="sentence">Example Sentence:</label>
+            <textarea id="sentence" th:field="*{sentence}" rows="3" placeholder="AI will generate example sentence..." required></textarea>
+        </div>
+        
+        <button type="submit" class="submit-btn">📚 Add Word to Vocabulary</button>
+    </form>
+
+    <script>
+        async function generateWordDetails() {
+            const wordInput = document.getElementById('word');
+            const meaningInput = document.getElementById('meaning');
+            const sentenceInput = document.getElementById('sentence');
+            const generateBtn = document.querySelector('.generate-btn');
+            
+            const word = wordInput.value.trim();
+            
+            if (!word) {
+                alert('Please enter a word first!');
+                wordInput.focus();
+                return;
+            }
+            
+            // Show loading state
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = '🔄 Generating... <span class="loading-spinner">⏳</span>';
+            
+            // Clear previous content
+            meaningInput.value = 'Generating meaning...';
+            sentenceInput.value = 'Generating example sentence...';
+            
+            try {
+                const response = await fetch('/generate-word-details', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'word=' + encodeURIComponent(word)
+                });
+                
+                if (response.ok) {
+                    const wordDetails = await response.json();
+                    
+                    // Fill the form fields with AI-generated content
+                    meaningInput.value = wordDetails.meaning;
+                    sentenceInput.value = wordDetails.sentence;
+                    
+                    // Success feedback
+                    generateBtn.innerHTML = '✅ Generated Successfully!';
+                    setTimeout(() => {
+                        generateBtn.innerHTML = '🤖 AI Generate';
+                        generateBtn.disabled = false;
+                    }, 2000);
+                } else {
+                    throw new Error('Failed to generate content');
+                }
+            } catch (error) {
+                alert('Error generating word details. Please check if Ollama is running and try again.');
+                console.error('Error:', error);
+                
+                // Reset fields on error
+                meaningInput.value = '';
+                sentenceInput.value = '';
+                generateBtn.innerHTML = '❌ Try Again';
+                setTimeout(() => {
+                    generateBtn.innerHTML = '🤖 AI Generate';
+                    generateBtn.disabled = false;
+                }, 2000);
+            }
+        }
+        
+        // Auto-focus on word input
+        document.getElementById('word').focus();
+    </script>
 </body>
 </html>
