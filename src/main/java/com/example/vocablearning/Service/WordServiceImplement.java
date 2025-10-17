@@ -3,7 +3,6 @@ package com.example.vocablearning.Service;
 import com.example.vocablearning.Entity.WordEntity;
 import com.example.vocablearning.Model.Word;
 
-import org.hibernate.annotations.processing.SQL;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

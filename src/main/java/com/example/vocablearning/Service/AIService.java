@@ -42,7 +42,7 @@ public class AIService {
                    "Provide only the definition without any extra text.";
     
     String response = chatClient.prompt(prompt).call().content();
-    return response.trim();
+    return (response != null) ? response.trim() : "";
 }
 
     private String generateSentence(String word, String meaning) {
@@ -52,7 +52,7 @@ public class AIService {
                        "Make it natural and easy to understand.";
 
     String response = chatClient.prompt(prompt).call().content();
-    return response.trim();
+    return (response != null) ? response.trim() : "";
 }
 
 }
